@@ -72,7 +72,7 @@ router.patch('/:id/cancel', requireAuth, async (req, res) => {
     if (!reservation) return res.status(404).json({ error: 'Reservering niet gevonden' });
     if (reservation.status === 'CANCELLED') return res.status(409).json({ error: 'Al geannuleerd' });
     const hasRental = await get('SELECT id FROM rental_transactions WHERE reservation_id=?', [req.params.id]);
-    if (hasRental) return res.status(409).json({ error: 'Kan niet annuleren â€” bad is al uitgeleverd' });
+    if (hasRental) return res.status(409).json({ error: 'Kan niet annuleren â€" bad is al uitgeleverd' });
     await run("UPDATE reservations SET status='CANCELLED',cancelled_at=datetime('now') WHERE id=?", [req.params.id]);
     const items = await all('SELECT * FROM reservation_items WHERE reservation_id=?', [req.params.id]);
     for (const item of items) await run("UPDATE articles SET status='AVAILABLE',updated_at=datetime('now') WHERE id=?", [item.article_id]);

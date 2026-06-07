@@ -129,9 +129,9 @@ app.get('/api/documents/:id/view', requireAuth, async (req, res) => {
     // Inject print button + contenteditable into the HTML
     let html = fs.readFileSync(filePath, 'utf8');
     const printBar = `<div id="printbar" style="position:fixed;top:0;left:0;right:0;background:#237062;color:#fff;padding:10px 20px;display:flex;gap:10px;align-items:center;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,0.2);font-family:Arial,sans-serif">
-      <span style="font-weight:700;font-size:14px;flex:1">'t Hart Verhuurdashboard â€” Documentvoorvertoning</span>
-      <span style="font-size:12px;opacity:0.8;margin-right:8px">ğŸ’¡ Klik op tekst om te bewerken</span>
-      <button onclick="window.print()" style="background:#9A1B85;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:700;font-size:13px">ğŸ–¨ï¸ Afdrukken</button>
+      <span style="font-weight:700;font-size:14px;flex:1">'t Hart Verhuurdashboard â€" Documentvoorvertoning</span>
+      <span style="font-size:12px;opacity:0.8;margin-right:8px">ğŸ'¡ Klik op tekst om te bewerken</span>
+      <button onclick="window.print()" style="background:#9A1B85;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:700;font-size:13px">ğŸ-¨ï¸ Afdrukken</button>
       <button onclick="window.close()" style="background:rgba(255,255,255,0.15);color:#fff;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:13px">âœ• Sluiten</button>
     </div>
     <style>
@@ -198,7 +198,7 @@ app.post('/api/documents/:id/email', requireAuth, async (req, res) => {
       EXTRA_INVOICE: 'Extra factuur', RETURN_RECEIPT: 'Ontvangstbevestiging'
     };
     const label = typeLabels[doc.type] || doc.type;
-    const subject = `${label} bevallingsbad â€” ${settings.practice_name}`;
+    const subject = `${label} bevallingsbad â€" ${settings.practice_name}`;
     const htmlBody = `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
         <div style="background:#237062;padding:20px 24px;border-radius:8px 8px 0 0">

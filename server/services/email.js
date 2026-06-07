@@ -111,7 +111,7 @@ async function dispatchEmail({ settings, to, cc, subject, htmlBody, attachments 
 }
 
 async function sendAgreementEmail({ client, pdfPath, settings }) {
-  const subject = `Uitleenovereenkomst bevallingsbad â€” ${settings.practice_name}`;
+  const subject = `Uitleenovereenkomst bevallingsbad â€" ${settings.practice_name}`;
   const htmlBody = `
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
       <div style="background:#237062;padding:20px 24px;border-radius:8px 8px 0 0">
@@ -129,7 +129,7 @@ async function sendAgreementEmail({ client, pdfPath, settings }) {
 }
 
 async function sendInvoiceEmail({ client, pdfPath, settings }) {
-  const subject = `Factuur bevallingsbad â€” ${settings.practice_name}`;
+  const subject = `Factuur bevallingsbad â€" ${settings.practice_name}`;
   const htmlBody = `
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
       <div style="background:#237062;padding:20px 24px;border-radius:8px 8px 0 0">
