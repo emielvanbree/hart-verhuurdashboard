@@ -24,9 +24,6 @@ function RequireAuth({ children }) {
   const location = useLocation();
   if (loading) return <div className="app-loading"><div className="spinner" /></div>;
   if (!user) return <Navigate to="/login" state={{ from: location }} replace />;
-  if (user.must_reset_password && location.pathname !== '/change-password') {
-    return <Navigate to="/change-password" replace />;
-  }
   return children;
 }
 

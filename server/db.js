@@ -108,7 +108,7 @@ async function seedData() {
   if (r.rows[0].c > 0) return;
 
   const adminHash = bcrypt.hashSync('Admin123!', 10);
-  await db.execute({ sql: "INSERT INTO users (name,email,password_hash,role,must_reset_password,active) VALUES (?,?,?,'ADMIN',1,1)", args: ['Beheerder','admin@thart.nl',adminHash] });
+  await db.execute({ sql: "INSERT INTO users (name,email,password_hash,role,must_reset_password,active) VALUES (?,?,?,'ADMIN',0,1)", args: ['Beheerder','admin@thart.nl',adminHash] });
   const assistHash = bcrypt.hashSync('Assistent123!', 10);
   await db.execute({ sql: "INSERT INTO users (name,email,password_hash,role,must_reset_password,active) VALUES (?,?,?,'ASSISTANT',0,1)", args: ['Praktijkassistente','assistent@thart.nl',assistHash] });
 
