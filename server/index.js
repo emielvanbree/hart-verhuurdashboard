@@ -1,6 +1,5 @@
 const express = require('express');
 const session = require('express-session');
-const LibsqlStore = require('./libsql_session_store');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
@@ -17,18 +16,18 @@ app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Session middleware initialized after DB in start()
-let _sessionMw;
-app.use((req, res, next) => _sessionMw ? _sessionMw(req, res, next) : res.status(503).json({error:'Starting up'}));
-function initSession(db) {
-  _sessionMw = session({
-    store: new LibsqlStore(db),
-    secret: process.env.SESSION_SECRET || 'verhuurdashboard-dev-secret-change-in-production',
-    resave: false, saveUninitialized: false,
-    cookie: { httpOnly: true, secure: process.env.NODE_ENV==='production', maxAge: 8*60*60*1000, sameSite: 'lax' },
-    rolling: true
-  });
-}
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'verhuurdashboard-dev-secret-change-in-production',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 8 * 60 * 60 * 1000,
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+  },
+  rolling: true
+}));
 
 app.use('/api/auth/login', rateLimit({ windowMs: 60000, max: 10, message: { error: 'Te veel verzoeken.' } }));
 
