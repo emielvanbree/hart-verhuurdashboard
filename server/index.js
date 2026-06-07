@@ -254,7 +254,6 @@ async function cleanupDuplicateDocuments() {
 
 async function start() {
   await init();
-  const { db } = require('./db'); initSession(db);
   await cleanupDuplicateDocuments();
   app.listen(PORT, () => {
     console.log(`\n✅ Verhuurdashboard draait op http://localhost:${PORT}`);
