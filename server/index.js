@@ -17,13 +17,18 @@ app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-app.use(session({
-  store: new LibsqlStore(require('./db').db),
-  secret: process.env.SESSION_SECRET || 'verhuurdashboard-dev-secret-change-in-production',
-  resave: false, saveUninitialized: false,
-  cookie: { httpOnly: true, secure: process.env.NODE_ENV==='production', maxAge: 8*60*60*1000, sameSite: 'lax' },
-  rolling: true
-}));
+// Session middleware initialized after DB in start()
+let _sessionMw;
+app.use((req, res, next) => _sessionMw ? _sessionMw(req, res, next) : res.status(503).json({error:'Starting up'}));
+function initSession(db) {
+  _sessionMw = session({
+    store: new LibsqlStore(db),
+    secret: process.env.SESSION_SECRET || 'verhuurdashboard-dev-secret-change-in-production',
+    resave: false, saveUninitialized: false,
+    cookie: { httpOnly: true, secure: process.env.NODE_ENV==='production', maxAge: 8*60*60*1000, sameSite: 'lax' },
+    rolling: true
+  });
+}
 
 app.use('/api/auth/login', rateLimit({ windowMs: 60000, max: 10, message: { error: 'Te veel verzoeken.' } }));
 
@@ -250,6 +255,7 @@ async function cleanupDuplicateDocuments() {
 
 async function start() {
   await init();
+  const { db } = require('./db'); initSession(db);
   await cleanupDuplicateDocuments();
   app.listen(PORT, () => {
     console.log(`\n✅ Verhuurdashboard draait op http://localhost:${PORT}`);

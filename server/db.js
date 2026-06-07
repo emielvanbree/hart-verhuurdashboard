@@ -94,7 +94,11 @@ async function initSchema() {
       details TEXT, timestamp TEXT DEFAULT (datetime('now')))`,
     `CREATE TABLE IF NOT EXISTS settings (
       key TEXT PRIMARY KEY, value TEXT NOT NULL,
-      updated_at TEXT DEFAULT (datetime('now')))`
+      updated_at TEXT DEFAULT (datetime('now')))`,
+    `CREATE TABLE IF NOT EXISTS sessions (
+      sid TEXT PRIMARY KEY,
+      sess TEXT NOT NULL,
+      expired_at INTEGER NOT NULL)`
   ];
   for (const sql of stmts) await db.execute(sql);
 }
